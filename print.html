@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>The Swineherd – A New Year Tale</title>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+@page{size:A4 portrait;margin:0}
+*{box-sizing:border-box}
+html,body{margin:0;background:#555}
+.sheet{width:210mm;height:297mm;margin:8mm auto;background:#f3e9d3;position:relative;overflow:hidden;page-break-after:always;break-after:page;font-family:'IM Fell English',serif;color:#1d1a16;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sheet::before{content:"";position:absolute;inset:7mm;border:1.2mm double #9b2f2a;pointer-events:none}
+.sheet::after{content:"✦  ❄  ✦";position:absolute;bottom:11mm;left:0;right:0;text-align:center;color:#9b2f2a;letter-spacing:4mm;font-size:5mm}
+.top{font:700 9mm 'Amatic SC',cursive;letter-spacing:1mm;margin-bottom:6mm;color:#9b2f2a;text-align:center}
+.sheet img{width:176mm;height:auto;border:.6mm solid #1d1a16;box-shadow:0 0 0 2mm #f3e9d3,0 0 0 2.6mm #9b2f2a}
+.sub{margin-top:9mm;font-style:italic;font-size:4.2mm;opacity:.8}
+.cover h1{font:700 26mm/0.95 'Amatic SC',cursive;text-align:center;margin:0 0 8mm;color:#9b2f2a}
+.cover h2{font:700 9mm 'Amatic SC',cursive;margin:0;letter-spacing:1mm}
+.cover p{font-style:italic;font-size:5mm;margin:6mm 20mm 0;text-align:center}
+.snow{position:absolute;inset:0;pointer-events:none}
+.bar{position:fixed;top:8px;right:12px;z-index:9}
+.bar button{font-size:16px;padding:8px 16px}
+@media print{html,body{background:none}.sheet{margin:0}.bar{display:none}}
+</style></head><body>
+<div class="bar"><button onclick="print()">Print / Save PDF (A4)</button></div>
+
+<section class="sheet cover">
+  <svg class="snow" viewBox="0 0 210 297" id="sn"></svg>
+  <h2>A New Year Tale</h2>
+  <h1>The<br>Swineherd</h1>
+  <h2>after Hans Christian Andersen</h2>
+  <p>Pictures by Heinrich Lefler · English text for the festive season</p>
+</section>
+
+<section class="sheet"><div class="top">Chapter II</div><img src="img/1.jpg"><div class="sub">The rose and the nightingale</div></section>
+<section class="sheet"><div class="top">Chapter V</div><img src="img/2.jpg"><div class="sub">A prince in disguise</div></section>
+<section class="sheet"><div class="top">Chapter XII</div><img src="img/3.jpg"><div class="sub">Rain, and a lesson learned</div></section>
+<section class="sheet"><div class="top">The End</div><img src="img/4.jpg"><div class="sub">Happy New Year! May it bring you honest friends.</div></section>
+
+<script>
+const s=document.getElementById('sn');let r=7,h='';
+const R=()=>(r=r*16807%2147483647)/2147483647;
+for(let i=0;i<70;i++){const x=R()*210,y=R()*297,z=1+R()*3.5;
+ h+=`<g transform="translate(${x} ${y}) scale(${z/3})" stroke="#9b2f2a" stroke-width=".5" opacity=".55">${[0,60,120].map(a=>`<line x1="-4" y1="0" x2="4" y2="0" transform="rotate(${a})"/>`).join('')}</g>`}
+s.innerHTML=h;
+</script></body></html>

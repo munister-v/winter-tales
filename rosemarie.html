@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rose Marie – Letters from the Snow</title>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+@page{size:A4 portrait;margin:0}
+*{box-sizing:border-box}
+html,body{margin:0;background:#3b2f28;font-family:'IM Fell English',serif;color:#1d1a16;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet{width:210mm;height:297mm;margin:8mm auto;background:#f3e9d3;position:relative;overflow:hidden;page-break-after:always;break-after:page;padding:11mm 10mm 14mm;display:flex;flex-direction:column;zoom:var(--z,1)}
+.sheet::before{display:none}
+.sheet::after{content:"✦ ❄ ✦";position:absolute;bottom:5mm;left:0;right:0;text-align:center;color:#9b2f2a;letter-spacing:4mm;font-size:4.5mm}
+.lab{font:700 8mm 'Amatic SC',cursive;color:#9b2f2a;letter-spacing:1.2mm;text-align:center;margin:0 0 5mm}
+.fig{position:relative;border:.6mm solid #1d1a16;align-self:center;line-height:0}
+.fig img{display:block;width:100%;height:auto;filter:sepia(.22) saturate(.95) contrast(1.04)}
+.rose{position:absolute;width:15mm;height:15mm;filter:drop-shadow(.3mm .3mm 0 #1d1a16)}
+.wide .fig{width:100%;margin-top:3mm}
+.wide .letter{margin-top:9mm}
+.letter{font:700 8.4mm/1.12 'Amatic SC',cursive;margin-top:12mm}
+.letter .dc{float:left;background:#1d1a16;color:#f3e9d3;width:11mm;height:11mm;text-align:center;line-height:12mm;font-size:9.5mm;margin:1mm 3mm 0 0}
+.letter small{display:block;font:italic 4mm 'IM Fell English',serif;text-align:right;margin-top:6mm;opacity:.75}
+.tall .row{display:flex;gap:8mm;flex:1;min-height:0;margin-top:2mm}
+.tall .fig{flex:none;align-self:flex-start}
+.tall .fig img{width:auto;height:216mm;max-width:110mm;object-fit:cover}
+.tall .letter{margin-top:2mm;font-size:7.6mm}
+.tall .col{flex:1;display:flex;flex-direction:column;gap:5mm;min-width:0}
+.dets{display:flex;gap:6mm;margin-top:9mm}
+.tall .dets{flex-direction:column;margin-top:2mm;gap:5mm}
+.det{flex:1;min-width:0}
+.dp{position:relative;border:.5mm solid #1d1a16;height:78mm;overflow:hidden;line-height:0}
+.tall .dp{height:62mm}
+.dp img{width:100%;height:100%;object-fit:cover;filter:sepia(.22) saturate(.95) contrast(1.04)}
+.cap{font:italic 3.6mm/1.2 'IM Fell English',serif;padding:1.5mm 0 0;text-align:center}
+.bub{position:absolute;left:4mm;top:4mm;max-width:70%;background:#fffaf0;border:.5mm solid #1d1a16;border-radius:5mm;padding:1.6mm 3mm;font:700 5.4mm/1 'Amatic SC',cursive;line-height:1.05}
+.bub::after{content:"";position:absolute;left:8mm;bottom:-2.6mm;width:4mm;height:4mm;background:#fffaf0;border-right:.5mm solid #1d1a16;border-bottom:.5mm solid #1d1a16;transform:rotate(45deg) skew(10deg,10deg)}
+.bub.r{left:auto;right:4mm}
+.cover{justify-content:center;align-items:center;text-align:center;padding:0}
+.cover .bg{position:absolute;inset:0;background:url(rm/uchikawa.jpg) 62% 50%/cover;filter:sepia(.3) saturate(.9) brightness(.8)}
+.cover .plate{position:relative;z-index:2;background:#f3e9d3;border:.8mm solid #1d1a16;padding:12mm 14mm;width:150mm}
+.cover h1{font:700 30mm/.9 'Amatic SC',cursive;color:#9b2f2a;margin:0}
+.cover h2{font:700 9mm 'Amatic SC',cursive;margin:3mm 0 0;letter-spacing:1mm}
+.cover p{font-style:italic;font-size:4.4mm;margin:6mm 0 0}
+.cover::after{display:none}
+.bar{position:fixed;top:8px;right:12px;z-index:9}.bar button{font-size:16px;padding:8px 16px}
+@media print{html,body{background:#f3e9d3}.sheet{margin:0;zoom:1}.bar{display:none}}
+</style></head><body>
+<div class="bar"><button onclick="print()">Print / PDF (A4)</button></div>
+<div id="b"></div>
+<script>
+const rose=(x,y,r=0)=>`<svg class="rose" style="left:${x}%;top:${y}%;transform:rotate(${r}deg)" viewBox="-20 -20 40 50" fill="none" stroke="#1d1a16" stroke-width="1.6" stroke-linejoin="round"><path d="M0 8L-2 28" stroke="#2f6b3a" stroke-width="3"/><path d="M-1 20q-9-2-12-8q8-1 12 6z" fill="#3f7d46"/><circle r="12" fill="#c93a36"/><path d="M-7 -3q7-9 14 0q-7 9-14 0M-4 1q4 5 8 0M-2 -8q5 3 6 9" /></svg>`;
+const D=(n,d)=>d.map((x,i)=>`<div class="det"><div class="dp"><img src="rm/d_${n}_${i+1}.jpg">${x.b?`<div class="bub ${x.r?'r':''}">${x.b}</div>`:''}</div><div class="cap">${x.c}</div></div>`).join('');
+const F=(src,cls,rx,ry,rr)=>`<div class="fig"><img src="rm/${src}">${rose(rx,ry,rr)}</div>`;
+const S=[
+ {t:'wide',l:'Letter I',img:'lefler_rain.jpg',d:[{b:'Have you seen a little rose?',c:'I asked everyone I met.'},{b:'Only the rain, miss.',c:'Nobody had seen it.',r:1}],r:[8,62,-14],
+  x:'Dear Winter, I have lost my little rose. I went out into the rain to look for it, and the rain only laughed at me and ran down my collar.'},
+ {t:'tall',l:'Letter II',img:'sumida.jpg',d:[{c:'Winter: “Walk, little one. I will not hurry you.”'},{c:'Even the boats had gone to sleep.'}],r:[62,78,10],
+  x:'So you sent the snow. The river fell silent and the boats lay down to sleep. I walked along the bank, counting the white hours, and every step I took was written in the snow behind me.'},
+ {t:'wide',l:'Letter III',img:'evening.jpg',d:[{b:'Roses? Only snow-light here.',c:'The lantern-man and his friend.'},{c:'Every window held a candle, and not one held a rose.'}],r:[84,12,12],
+  x:'By the lamps of a strange bridge a lantern-man told me: “Roses do not grow here, child. Only snow-light.” But he looked at my empty hands and bowed, as one bows to a queen.'},
+ {t:'wide',l:'Letter IV',img:'gion.jpg',d:[{b:'Which way, honoured spirits?',c:'Two travellers under straw hats.'},{c:'The great gate said nothing. The gate pointed.'}],r:[10,10,-10],
+  x:'At the shrine I bowed three times and asked for a sign. The cedars shook out their white sleeves and pointed me on, deeper into the night.'},
+ {t:'tall',l:'Letter V',img:'gorge.jpg',d:[{c:'The ice rang like glass beneath my feet.'},{b:'Higher…',c:'The wind, very quietly.'}],r:[56,10,-8],
+  x:'I climbed into a gorge where even the wind spoke in whispers. The ice rang like glass. And there, on a branch no thicker than a thread, something small and brown was waiting.'},
+ {t:'wide',l:'Letter VI',img:'asuka.jpg',d:[{c:'A patient horse nodded: “Follow the lights.”'},{b:'Rose Marie… Rose Marie…',c:'The nightingale, from the pines.',r:1}],r:[84,74,14],
+  x:'A nightingale! It sang my own name back to me, and the evening answered with a hundred small lights. I was not lost any more. I was only far from home.'},
+ {t:'tall',l:'Letter VII',img:'morning.jpg',d:[{c:'Dawn came, pink as a petal.'},{c:'The river woke, and the boats woke with it.'}],r:[10,72,-12],
+  x:'At dawn the snow fell silent. Under it – shoots, green and red, as stubborn as a promise. Winter, I think you knew all along where my rose was hiding.'},
+ {t:'tall',l:'Letter VIII',img:'lefler_door.jpg',d:[{b:'Go home, Rose Marie.',c:'Winter, at last.'},{b:'Spring is writing back.',c:'And she, still in her party dress.',r:1}],r:[70,70,8],
+  x:'So I knocked at winter’s door. It opened a crack. “Go home, Rose Marie,” it said. “Spring is already writing back.”'},
+ {t:'wide',l:'Postscript',img:'kanda.jpg',d:[{c:'The shrine glowed red, like a rose carried in cupped hands.'},{c:'The bridge back home – and the road, already thawing.'}],r:[8,12,-10],
+  x:'P.S. The roses came back. All of them – the paper ones too. If you see the nightingale, tell it the window is open. Your friend, Rose Marie.'}
+];
+const b=document.getElementById('b');
+b.insertAdjacentHTML('beforeend',`<section class="sheet cover"><div class="bg"></div><div class="plate"><h2>Letters from the Snow</h2><h1>Rose<br>Marie</h1><h2>A winter tale in nine letters</h2><p>Woodblock prints by Utagawa Hiroshige (The Met, public domain) and illustrations by Heinrich Lefler</p></div></section>`);
+S.forEach(s=>{
+ const txt=`<div class="letter"><span class="dc">${s.x[0]}</span>${s.x.slice(1)}</div>`;
+ const fig=F(s.img,'',...s.r);const dt=`<div class="dets">${D(s.img.replace('.jpg',''),s.d)}</div>`;
+ b.insertAdjacentHTML('beforeend',`<section class="sheet ${s.t}"><div class="lab">${s.l}</div>${s.t==='tall'?`<div class="row">${fig}<div class="col">${txt}${dt}</div></div>`:`<div class="wide">${fig}</div>${txt}${dt}`}</section>`);
+});
+const z=()=>document.documentElement.style.setProperty('--z',Math.min(1,innerWidth/(210*3.7795+24)));z();addEventListener('resize',z);
+</script></body></html>

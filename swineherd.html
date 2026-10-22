@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Swineherd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1d1a16;--paper:#f2e8d2;--desk:#3a2f27}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:radial-gradient(ellipse at center,#4b3d33,#241c17);color:#eadfc8;font-family:'IM Fell English',Georgia,serif}
+  #app{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:10px}
+  #book{position:relative;width:min(96vw,calc((100vh - 70px)*0.975));aspect-ratio:1027/1053;box-shadow:0 20px 60px #000a,0 0 0 6px #e9dcc0,0 0 0 8px #8a7556;background:var(--paper);overflow:hidden}
+  .page{position:absolute;inset:0;opacity:0;transform:translateX(30px);transition:opacity .6s,transform .6s;pointer-events:none}
+  .page.on{opacity:1;transform:none;pointer-events:auto}
+  .page.out{transform:translateX(-30px)}
+  .page svg{width:100%;height:100%;display:block}
+  .hand{font-family:'Amatic SC','Comic Sans MS',cursive;font-weight:700;fill:var(--ink);letter-spacing:.5px}
+  #bar{display:flex;gap:12px;align-items:center}
+  button{font:inherit;font-size:18px;color:#eadfc8;background:#5a4636;border:1px solid #9c845f;padding:6px 18px;border-radius:3px;cursor:pointer}
+  button:hover{background:#74593f}button:disabled{opacity:.35;cursor:default}
+  #num{min-width:60px;text-align:center;font-size:20px;letter-spacing:2px}
+  .clickable{cursor:pointer}
+  .clickable:hover{filter:brightness(1.25)}
+  .hint{font-size:14px;opacity:.7}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="book"></div>
+  <div id="bar">
+    <button id="prev">◀ Back</button>
+    <span id="num">II</span>
+    <button id="next">Turn ▶</button>
+    <button id="snd">♪ Sound</button>
+  </div>
+  <div class="hint">Arrow keys turn the page · click the nightingale (II) or the song (XII) to hear them</div>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const INK='#1d1a16', PAPER='#f2e8d2';
+function rng(seed){return()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646}}
+
+
+const T=(x,y,t,fs=42,extra='')=>`<text class="hand" x="${x}" y="${y}" font-size="${fs}" ${extra}>${t}</text>`;
+const lines=(arr,x,y,lh,fs)=>arr.map((t,i)=>T(x,y+i*lh,t,fs)).join('');
+const cap=(x,y,ch,s=32)=>`<rect x="${x}" y="${y}" width="${s}" height="${s}" fill="${INK}"/><text x="${x+s/2}" y="${y+s-4}" text-anchor="middle" class="hand" font-size="${s+2}" style="fill:#f6ecd8">${ch}</text>`;
+const knot=(x,y,w)=>{let d=`M${x} ${y}`;for(let i=0;i<w/10;i++)d+=' q5 -9 10 0';return `<rect x="${x-3}" y="${y-13}" width="${w+6}" height="18" rx="3" fill="none" stroke="${INK}" stroke-width="1.5"/><path d="${d}" stroke="${INK}" fill="none" stroke-width="1.8"/>`};
+
+function ov1(){
+  const rest=['a truly glorious rose-tree!','It bloomed only every fifth year','and even then bore but a single','rose, but what a rose! It smelled','so sweet that one forgot all one’s','cares and sorrows on smelling it.','And then he had a nightingale','that could sing so beautifully,','as if all the sweet melodies lay','in its little throat.','This rose and this nightingale','the Princess was to have, and','therefore both were put into great','silver caskets and sent to her.'];
+  return cap(335,204,'O',32)+T(376,232,'n the grave of the Prince’s',44)
+   +T(335,276,'father grew a rose-tree –',44)+lines(rest,335,320,43,44)
+   +knot(800,262,36)
+   +`<g class="clickable" id="nightingale" transform="translate(540 930)"><rect x="-10" y="-34" width="340" height="50" fill="transparent"/>
+    <path d="M0 -5 q22 -26 44 -6 q10 -14 22 -4 l8 -4 -4 10 q-12 20 -34 18 q-18 6 -36 -14z" fill="#f4e6c8" stroke="${INK}" stroke-width="2"/><circle cx="52" cy="-14" r="2" fill="${INK}"/>
+    <path d="M90 -6H310M90 -14H310M90 -22H310" stroke="${INK}" stroke-width="1.2"/>
+    ${[110,140,172,206,236,270,290].map((x,i)=>`<ellipse cx="${x}" cy="${-22+((i*7)%3)*8}" rx="5" ry="3.6" fill="${INK}"/>`).join('')}
+    <circle cx="326" cy="-6" r="12" fill="#e5e0d4" stroke="${INK}" stroke-width="1.6"/><circle cx="326" cy="-6" r="5" fill="#cf3b36"/></g>`;
+}
+function ov2(){
+  return cap(60,50,'B',34)+T(102,82,'ut he was not to be frightened, he stained',46)
+   +T(62,132,'his face with brown and black, pulled his cap',46)
+   +T(62,178,'down over his brows, and knocked.',46)+knot(660,168,230)
+   +T(62,938,'“Good day, Emperor!” said he. “Could I not',46)
+   +T(62,988,'get a place here at the castle?”',46)+knot(560,978,370);
+}
+function ov3(){
+  const L=['here she stood and wept, the swineherd scolded,','and the rain streamed down. “Oh, I wretched creature,”','said the Princess, “if only I had taken the handsome','Prince. Oh, how unhappy I am!”','And the swineherd went behind a tree, wiped the black','and brown from his face, threw off his wretched clothes','and stepped forth in his princely dress, so handsome that','the Princess had to curtsy.','“I have come to this, that I despise you,” said he.','You would not have an honest Prince,'];
+  return cap(58,616,'T',32)+T(100,644,L[0],40)+lines(L.slice(1,4),62,684,40,40)
+   +lines(L.slice(4),62,806,38,40);
+}
+const ban=(x,y,t,r)=>`<g transform="rotate(${r} ${x} ${y})"><rect x="${x-72}" y="${y-48}" width="144" height="96" rx="6" fill="#f6eedb" stroke="#1d1a16" stroke-width="2"/><text class="hand" x="${x}" y="${y+26}" text-anchor="middle" font-size="84">${t}</text></g>`;
+function ov4(){
+  return cap(556,52,'Y',30)+T(596,78,'ou did not understand the',42)
+   +lines(['rose and the nightingale, but the','swineherd you could kiss for a toy;','that is what you get for it.”'],556,120,40,42)
+   +T(556,234,'•',30)+cap(556,252,'A',26)+T(590,274,'nd then he went into his',42)
+   +lines(['kingdom and shut the door in her','face.'],556,316,40,42)+T(556,396,'•',30)
+   +cap(556,410,'T',26)+T(590,432,'here she could stand outside',42)+T(556,474,'and sing:',42)
+   +`<text x="640" y="640" font-size="22" style="font-family:sans-serif;fill:${INK}" letter-spacing="1">AH, DEAR AUGUSTINE,</text>`
+   +`<text x="640" y="752" font-size="22" style="font-family:sans-serif;fill:${INK}" letter-spacing="1">ALL IS LOST, LOST, LOST.</text>`
+   +ban(112,896,'THE',-28)+ban(912,888,'END',-34)+`<rect id="song" class="clickable" x="570" y="500" width="435" height="260" fill="transparent"/>`;
+}
+const PAGES=[ov1,ov2,ov3,ov4];
+const book=document.getElementById('book');
+PAGES.forEach((f,i)=>{
+  const d=document.createElement('div');d.className='page';
+  d.innerHTML=`<svg viewBox="0 0 1027 1053" xmlns="http://www.w3.org/2000/svg"><image href="img/${i+1}.jpg" width="1027" height="1053"/>${f()}</svg>`;
+  book.appendChild(d);
+});
+const els=[...book.children];
+const numEl=document.getElementById('num');
+let cur=0;
+function show(n){
+  n=Math.max(0,Math.min(PAGES.length-1,n));
+  els.forEach((e,i)=>{e.classList.toggle('on',i===n);e.classList.toggle('out',i<n)});
+  cur=n;numEl.textContent=`${n+1} / ${PAGES.length}`;
+  document.getElementById('prev').disabled=n===0;
+  document.getElementById('next').disabled=n===PAGES.length-1;
+}
+document.getElementById('prev').onclick=()=>show(cur-1);
+document.getElementById('next').onclick=()=>show(cur+1);
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')show(cur+1);
+  if(e.key==='ArrowLeft'||e.key==='PageUp')show(cur-1);
+});
+let sx=0;book.addEventListener('pointerdown',e=>sx=e.clientX);
+book.addEventListener('pointerup',e=>{const d=e.clientX-sx;if(Math.abs(d)>60)show(cur+(d<0?1:-1))});
+
+/* ---------- sound (WebAudio) ---------- */
+let ac=null,soundOn=true;
+function ctx(){return ac||(ac=new (window.AudioContext||window.webkitAudioContext)())}
+function tone(f,t0,dur,type='triangle',vol=.18){
+  const a=ctx(),o=a.createOscillator(),g=a.createGain();
+  o.type=type;o.frequency.setValueAtTime(f,a.currentTime+t0);
+  g.gain.setValueAtTime(0,a.currentTime+t0);
+  g.gain.linearRampToValueAtTime(vol,a.currentTime+t0+.02);
+  g.gain.exponentialRampToValueAtTime(.001,a.currentTime+t0+dur);
+  o.connect(g).connect(a.destination);o.start(a.currentTime+t0);o.stop(a.currentTime+t0+dur+.05);
+}
+function augustin(){
+  if(!soundOn)return;
+  const F={D4:293.66,G4:392,A4:440,B4:493.88,C5:523.25,D5:587.33,E5:659.25};
+  // Ach, du lieber Augustin, alles ist hin, hin, hin
+  const seq=[['D4',.35],['G4',.35],['G4',.35],['G4',.7],['A4',.35],['B4',.35],['B4',.35],['B4',.7],['A4',.35],['G4',.35],['A4',.35],['B4',.7],['G4',.35],['G4',.35],['G4',.7]];
+  let t=0;seq.forEach(([n,d])=>{tone(F[n],t,d*.9);t+=d*.62*1.6});
+}
+function nightingale(){
+  if(!soundOn)return;
+  let t=0;
+  for(let k=0;k<5;k++){
+    const base=1800+Math.random()*900;
+    for(let i=0;i<6;i++){tone(base*(1+i*.08*(k%2?1:-1)),t,.08,'sine',.07);t+=.07}
+    t+=.12;
+    for(let i=0;i<4;i++){tone(base*1.5,t,.05,'sine',.06);t+=.09}
+    t+=.22;
+  }
+}
+document.getElementById('snd').onclick=e=>{soundOn=!soundOn;e.target.textContent=soundOn?'♪ Sound':'♪ Muted'};
+document.addEventListener('click',e=>{
+  if(e.target.closest('#nightingale'))nightingale();
+  if(e.target.closest('#song'))augustin();
+});
+show(0);
+</script>
+</body>
+</html>
