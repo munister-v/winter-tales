@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>New Year Night – Tales from Japan, Italy and China</title>
+<meta name="description" content="Three New Year tales told over real museum artworks: Kasa Jizō from Japan, La Befana from Italy, and the beast Nian from China.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Noto+Serif+JP:wght@700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0f1420;--ink:#f4ead6;--gold:#d8b26a;--red:#c2402f;--muted:#b9ad97}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#24304a,var(--night) 60%) fixed;color:var(--ink);font:500 20px/1.6 'Cormorant Garamond',Georgia,serif;overflow-x:hidden}
+canvas#snow,canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:5}
+a{color:var(--gold)}
+nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:6px;background:#0f1420cc;backdrop-filter:blur(8px);padding:6px;border:1px solid #d8b26a40;border-radius:40px}
+nav a{text-decoration:none;font-size:15px;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:30px;color:var(--muted);transition:.3s}
+nav a.on,nav a:hover{background:var(--gold);color:var(--night)}
+header{min-height:100vh;display:grid;place-items:center;text-align:center;padding:12vh 20px;position:relative}
+header .k{font:700 clamp(16px,2vw,20px)/1 'Noto Serif JP',serif;letter-spacing:.6em;color:var(--gold);opacity:.85}
+header h1{font:700 clamp(64px,12vw,170px)/.88 'Cormorant Garamond',serif;margin:.25em 0 .15em;background:linear-gradient(180deg,#fff6e0,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{max-width:620px;margin:0 auto;font-style:italic;color:var(--muted);font-size:clamp(18px,2.2vw,23px)}
+.clock{margin-top:5vh;display:flex;gap:clamp(12px,3vw,30px);justify-content:center}
+.clock div{min-width:70px}.clock b{display:block;font-size:clamp(36px,6vw,58px);line-height:1;color:var(--ink)}
+.clock span{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.down{margin-top:6vh;display:inline-block;animation:bob 2s infinite;color:var(--gold);text-decoration:none;font-size:28px}
+@keyframes bob{50%{transform:translateY(8px)}}
+section.tale{padding:14vh 5vw 8vh;max-width:1280px;margin:0 auto}
+.head{display:flex;align-items:baseline;gap:22px;flex-wrap:wrap;border-bottom:1px solid #d8b26a55;padding-bottom:16px;margin-bottom:6vh}
+.glyph{font:700 clamp(54px,8vw,92px)/1 'Noto Serif JP',serif;color:var(--red);text-shadow:0 0 30px #c2402f55}
+.tale[data-c=cn] .glyph{font-family:'Noto Serif SC',serif}
+.head h2{font:700 clamp(40px,6vw,72px)/1 'Cormorant Garamond',serif;margin:0}
+.head .where{font-size:15px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);flex-basis:100%}
+.scene{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,5vw,70px);align-items:center;margin-bottom:12vh}
+.scene.flip{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+.scene.flip figure{order:2}
+figure{margin:0;position:relative}
+.frame{overflow:hidden;border:1px solid #d8b26a;box-shadow:0 0 0 6px var(--night),0 0 0 7px #d8b26a66,0 30px 70px #000c;background:#000}
+.frame img{display:block;width:100%;height:auto;max-height:82vh;object-fit:cover;transform:scale(1.08);transition:transform 9s ease-out,opacity 1.4s;opacity:0}
+.in .frame img{transform:scale(1);opacity:1}
+figcaption{font-size:14px;font-style:italic;color:var(--muted);margin-top:16px;line-height:1.4}
+.text{opacity:0;transform:translateY(30px);transition:1.2s .3s}
+.in .text{opacity:1;transform:none}
+.text p{margin:0 0 1em}
+.text p:first-child::first-letter{float:left;font:700 4.2em/.8 'Cormorant Garamond',serif;color:var(--gold);margin:.06em .1em 0 0}
+.say{font-style:italic;color:#ffe6b0}
+.play{margin-top:10px;display:inline-flex;align-items:center;gap:12px;font:inherit;font-size:18px;color:var(--night);background:var(--gold);border:0;padding:10px 22px;border-radius:40px;cursor:pointer;transition:.25s;box-shadow:0 0 0 0 #d8b26a80}
+.play:hover{transform:translateY(-2px);box-shadow:0 0 0 8px #d8b26a22}
+.play small{opacity:.7}
+.note{font-size:16px;color:var(--muted);margin-top:10px;min-height:1.6em;font-style:italic}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.duo .frame img{aspect-ratio:3/4;object-fit:cover}
+footer{text-align:center;padding:16vh 20px 10vh;position:relative}
+footer h2{font:700 clamp(54px,10vw,130px)/.9 'Cormorant Garamond',serif;margin:0 0 20px;background:linear-gradient(180deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.greet{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;font-size:22px;margin:0 auto 6vh;max-width:800px;color:var(--muted)}
+.greet b{color:var(--ink);font-weight:700}
+.final{max-width:420px;margin:0 auto}
+.credits{margin:8vh auto 0;max-width:760px;font-size:15px;color:var(--muted);line-height:1.6}
+.back{display:inline-block;margin-top:24px;font-size:16px}
+@media (max-width:820px){
+  body{font-size:18px}
+  nav a{padding:5px 9px;font-size:12px}
+  .scene,.scene.flip{grid-template-columns:1fr}
+  .scene.flip figure{order:0}
+  section.tale{padding:12vh 16px 4vh}
+}
+@media (prefers-reduced-motion:reduce){.frame img,.text{transition:none;transform:none;opacity:1}}
+</style></head><body>
+<canvas id="snow"></canvas><canvas id="fx"></canvas>
+<nav><a href="#top">Night</a><a href="#jp">Japan</a><a href="#it">Italy</a><a href="#cn">China</a><a href="#end">Midnight</a></nav>
+
+<header id="top"><div>
+  <div class="k">大晦日 · La Vigilia · 除夕</div>
+  <h1>New Year<br>Night</h1>
+  <p>Three old tales for the longest night of the year – told over real prints and paintings from Japan, Italy and China.</p>
+  <div class="clock" id="clock"></div>
+  <a class="down" href="#jp" aria-label="Begin">❄</a>
+</div></header>
+
+<!-- ───────── JAPAN ───────── -->
+<section class="tale" id="jp" data-c="jp">
+  <div class="head"><span class="glyph">笠地蔵</span><h2>The Six Snow Hats</h2><span class="where">Japan · Ōmisoka, the last night of the year</span></div>
+
+  <div class="scene">
+    <figure><div class="frame"><img src="ny/jp_village.jpg" alt="Seaside village in winter, by Hokusai" loading="lazy"></div>
+      <figcaption>Katsushika Hokusai, <i>Seaside Village in Winter</i>, 1814</figcaption></figure>
+    <div class="text">
+      <p>In a village by the sea lived an old man and an old woman so poor that, on the last day of the year, there was not a single grain of rice for their New Year cakes.</p>
+      <p>“I will weave straw hats,” said the old man, “and sell them in town.” He wove five, tied them on a pole and set out through the falling snow.</p>
+    </div>
+  </div>
+
+  <div class="scene flip">
+    <figure><div class="frame"><img src="ny/jp_sumida.jpg" alt="Snow on the Sumida River, by Hokusai" loading="lazy"></div>
+      <figcaption>Katsushika Hokusai, <i>Snow on the Sumida River</i>, c. 1833</figcaption></figure>
+    <div class="text">
+      <p>But the town was busy with its own good fortune, and no one wanted a straw hat. Evening came. The river turned white, the boats went home, and the old man went home too, with all five hats still on his pole.</p>
+    </div>
+  </div>
+
+  <div class="scene">
+    <figure><div class="frame"><img src="ny/jp_jizo.jpg" alt="Wayfarers at a statue of Jizō, by Kuniyoshi" loading="lazy"></div>
+      <figcaption>Utagawa Kuniyoshi, <i>Wayfarers Looking at the Statue of Jizō</i>, c. 1840</figcaption></figure>
+    <div class="text">
+      <p>At the edge of the pine wood stood six stone Jizō, guardians of travellers, their bald heads heaped with snow. “You must be cold,” said the old man, and brushed them clean, and put a hat on each.</p>
+      <p>Five hats – six Jizō. So he took off his own worn towel and tied it on the last one. Then he walked home bareheaded, and the old woman said, <span class="say">“You did well.”</span></p>
+      <p>At midnight, all over Japan, temple bells ring 108 times – one stroke for each worldly worry, so the year begins clean.</p>
+      <button class="play" id="bell">🔔 Ring the bell <small id="bellN">0 / 108</small></button>
+      <div class="note" id="bellNote"></div>
+    </div>
+  </div>
+
+  <div class="scene flip">
+    <figure><div class="frame"><img src="ny/jp_prep.jpg" alt="Preparations for the New Year, by Totoya Hokkei" loading="lazy"></div>
+      <figcaption>Totoya Hokkei, <i>Preparations for the New Year</i>, 1817</figcaption></figure>
+    <div class="text">
+      <p>Before dawn they heard singing in the snow – and something heavy set down at their door. <i>Zushin!</i></p>
+      <p>Outside lay rice, and mochi, and sake, and pine for the gate, and bright cloth for the New Year. And far off down the white road, six small figures in straw hats were walking away – the last one in a towel.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── ITALY ───────── -->
+<section class="tale" id="it" data-c="it">
+  <div class="head"><span class="glyph" style="font-family:'Cormorant Garamond',serif;font-style:italic">Befana</span><h2>The Old Woman Who Swept</h2><span class="where">Italy · the Eve of Epiphany, 5 January</span></div>
+
+  <div class="scene">
+    <figure><div class="frame"><img src="ny/it_house.jpg" alt="A pink house with a balcony, detail of an Adoration of the Magi" loading="lazy"></div>
+      <figcaption>Detail, <i>The Adoration of the Magi</i>, Neapolitan follower of Giotto, c. 1340</figcaption></figure>
+    <div class="text">
+      <p>In a house with a balcony lived an old woman who loved one thing above all: a clean floor. She swept in the morning and swept at night, and her broom was the best-known broom in all the hills.</p>
+      <p>One winter evening three travellers knocked – kings, by their cloaks, all gold and thread. “We follow a star to a newborn child,” they said. <span class="say">“Come with us.”</span></p>
+    </div>
+  </div>
+
+  <div class="scene flip">
+    <figure><div class="duo">
+      <div class="frame"><img src="ny/it_kings.jpg" alt="Two of the Magi, detail" loading="lazy"></div>
+      <div class="frame"><img src="ny/it_magi.jpg" alt="The Adoration of the Magi" loading="lazy" style="object-position:50% 70%"></div></div>
+      <figcaption>Neapolitan follower of Giotto, <i>The Adoration of the Magi</i>, c. 1340–43</figcaption></figure>
+    <div class="text">
+      <p>“Not tonight,” said the old woman. “I have sweeping to do.” And she closed the door.</p>
+      <p>By midnight she was sorry. She took her broom and a sack of sweets and ran after the star – but the kings were gone and the star was gone, and she has been searching ever since.</p>
+      <p>Every year on the night of 5 January, La Befana flies over Italy on her broom and stops at every house with a child in it, just in case. Good children find sweets in their stocking. Naughty ones find coal – though it is usually sugar coal, because she is not as stern as she looks.</p>
+      <button class="play" id="sock">🧦 Look in your stocking</button>
+      <div class="note" id="sockNote"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── CHINA ───────── -->
+<section class="tale" id="cn" data-c="cn">
+  <div class="head"><span class="glyph">年</span><h2>The Beast Called Year</h2><span class="where">China · Chúxī, the eve of the Spring Festival</span></div>
+
+  <div class="scene">
+    <figure><div class="frame"><img src="ny/cn_luoping.jpg" alt="Drinking in the Bamboo Garden on the Lantern Festival, by Luo Ping" loading="lazy"></div>
+      <figcaption>Luo Ping, <i>Drinking in the Bamboo Garden on the Lantern Festival</i>, 1773</figcaption></figure>
+    <div class="text">
+      <p>Long ago a beast named Nián lived at the bottom of the sea. Once a year, on the last night of winter, it climbed out to eat the crops, the cattle – and anyone it found.</p>
+      <p>So every year the villagers fled to the mountains. One year an old beggar came and asked to stay. Everyone was packing; only an old grandmother gave him a bowl of rice. “Let me keep your house tonight,” he said, “and I will send the beast away.”</p>
+    </div>
+  </div>
+
+  <div class="scene flip">
+    <figure><div class="frame" style="background:#f2ead8"><img src="ny/cn_lantern.jpg" alt="Hanging lantern, Chinese, 19th century" loading="lazy"></div>
+      <figcaption>Anonymous, <i>Hanging Lantern</i>, China, 19th century</figcaption></figure>
+    <div class="text">
+      <p>At midnight Nián came down the road. But the grandmother’s door was pasted with red paper, candles burned in every window, and in the yard the old man had thrown bamboo on the fire – <i>pī-pā! pī-pā!</i> – it cracked like thunder.</p>
+      <p>The beast, it turns out, was afraid of three things: the colour red, bright light, and loud noise. It ran back to the sea and never came again.</p>
+      <p>And that is why, on New Year’s Eve, the doors are red, the lanterns are lit and the firecrackers never stop. Chase it away yourself:</p>
+      <button class="play" id="crack">🧨 Light the firecrackers</button>
+      <div class="note" id="crackNote"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── MIDNIGHT ───────── -->
+<footer id="end">
+  <h2>Happy<br>New Year</h2>
+  <div class="greet"><span><b>あけましておめでとう</b> Japan</span><span><b>Buon Anno</b> Italy</span><span><b>新年快乐</b> China</span><span><b>Gelukkig Nieuwjaar</b> Holland</span><span><b>З Новим роком</b> Ukraine</span></div>
+  <figure class="final"><div class="frame"><img src="ny/nl_nieuwjaar.jpg" alt="New Year, lithograph by Theodorus van Hoytema" loading="lazy"></div>
+    <figcaption>Theodorus van Hoytema, <i>Nieuwjaar</i> (New Year), 1894</figcaption></figure>
+  <p><button class="play" id="boom">🎆 Midnight!</button></p>
+  <div class="credits">All artworks: The Metropolitan Museum of Art, Open Access – public domain.<br>Tales retold freely from Japanese, Italian and Chinese folklore.<br><a class="back" href="index.html">← All winter tales</a></div>
+</footer>
+
+<script>
+const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+/* snow */
+const sc=document.getElementById('snow'),sx=sc.getContext('2d');let W,H,fl=[];
+function rs(){W=sc.width=fx.width=innerWidth;H=sc.height=fx.height=innerHeight;fl=Array.from({length:Math.min(160,W/7|0)},()=>({x:Math.random()*W,y:Math.random()*H,r:.6+Math.random()*2.4,v:.25+Math.random()*.8,d:Math.random()*6}))}
+const fx=document.getElementById('fx'),fc=fx.getContext('2d');rs();addEventListener('resize',rs);
+let parts=[];
+function loop(){
+  sx.clearRect(0,0,W,H);sx.fillStyle='rgba(255,255,255,.75)';
+  for(const p of fl){p.y+=p.v;p.d+=.01;p.x+=Math.sin(p.d)*.35;if(p.y>H){p.y=-5;p.x=Math.random()*W}sx.beginPath();sx.arc(p.x,p.y,p.r,0,7);sx.fill()}
+  fc.clearRect(0,0,W,H);
+  parts=parts.filter(p=>p.l>0);
+  for(const p of parts){p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.985;p.l-=1;fc.globalAlpha=Math.min(1,p.l/30);fc.fillStyle=p.c;fc.beginPath();fc.arc(p.x,p.y,p.r,0,7);fc.fill()}
+  fc.globalAlpha=1;
+  if(!RM||parts.length)requestAnimationFrame(loop);
+}
+loop();
+function burst(x,y,cols,n=80,sp=5,g=.06,life=70){for(let i=0;i<n;i++){const a=Math.random()*6.28,s=Math.random()*sp;parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,g,l:life*(.6+Math.random()*.6),r:1+Math.random()*2,c:cols[i%cols.length]})}if(RM)loop()}
+
+/* countdown */
+function tick(){
+  const now=new Date(),ny=new Date(now.getFullYear()+1,0,1),d=ny-now;
+  const u=[[d/864e5|0,'days'],[d/36e5%24|0,'hours'],[d/6e4%60|0,'minutes'],[d/1e3%60|0,'seconds']];
+  document.getElementById('clock').innerHTML=u.map(([v,l])=>`<div><b>${String(v).padStart(2,'0')}</b><span>${l}</span></div>`).join('')+`<div style="align-self:center;font-style:italic;color:var(--gold)">to ${ny.getFullYear()}</div>`;
+}
+tick();setInterval(tick,1000);
+
+/* reveal + nav */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.25});
+document.querySelectorAll('.scene,.final').forEach(s=>io.observe(s));
+const nav=[...document.querySelectorAll('nav a')];
+const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)nav.forEach(a=>a.classList.toggle('on',a.hash==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('header,section,footer').forEach(s=>io2.observe(s));
+
+/* audio */
+let ac;const A=()=>ac||(ac=new (window.AudioContext||window.webkitAudioContext)());
+function partial(f,t,dur,vol,type='sine'){const a=A(),o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,a.currentTime+t);g.gain.linearRampToValueAtTime(vol,a.currentTime+t+.01);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+t+dur);o.connect(g).connect(a.destination);o.start(a.currentTime+t);o.stop(a.currentTime+t+dur+.1)}
+function noise(t,dur,vol,hp=800){const a=A(),b=a.createBuffer(1,a.sampleRate*dur,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,4);const s=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();f.type='highpass';f.frequency.value=hp;g.gain.value=vol;s.buffer=b;s.connect(f).connect(g).connect(a.destination);s.start(a.currentTime+t)}
+/* temple bell: low inharmonic partials, long decay */
+function bonsho(){[[68,.5,9],[136,.25,7],[181,.18,6],[245,.12,4],[363,.06,3]].forEach(([f,v,d])=>partial(f,0,d,v))}
+const thoughts=['greed','hurry','envy','worry about money','a sharp word','cold feet','the unanswered letter','too much sake','pride','that one argument'];
+let bells=0;
+document.getElementById('bell').onclick=e=>{
+  bells=Math.min(108,bells+1);bonsho();
+  document.getElementById('bellN').textContent=bells+' / 108';
+  const r=e.currentTarget.getBoundingClientRect();burst(r.left+r.width/2,r.top,['#f4ead6','#d8b26a'],24,2.4,.02,60);
+  document.getElementById('bellNote').textContent=bells===108?'The year is swept clean. Akemashite omedetō!':`Gone: ${thoughts[(bells-1)%thoughts.length]}.`;
+};
+const gifts=[['🍬','Caramelle! Sweets – you were good this year.'],['🍫','Chocolate coins and a tangerine.'],['⚫','Carbone… but taste it: it’s sugar coal. She forgives you.'],['🍊','A tangerine, walnuts and a little torrone.'],['🧹','Only a bit of straw from her broom. She was in a hurry.']];
+let gi=0;
+document.getElementById('sock').onclick=e=>{
+  const [ic,t]=gifts[gi++%gifts.length];
+  document.getElementById('sockNote').textContent=ic+' '+t;
+  partial(1318,0,.4,.08);partial(1760,.12,.5,.07);partial(2093,.24,.7,.06);
+  const r=e.currentTarget.getBoundingClientRect();burst(r.left+r.width/2,r.top,['#d8b26a','#ffe6b0','#c2402f'],40,3.5,.05);
+};
+let cracks=0;
+document.getElementById('crack').onclick=e=>{
+  const r=e.currentTarget.getBoundingClientRect();
+  for(let i=0;i<14;i++){setTimeout(()=>{noise(0,.12,.5,1200+Math.random()*1500);burst(r.left+Math.random()*r.width,r.top-Math.random()*60,['#ff5a3c','#ffd27a','#c2402f'],18,3,.08,40)},i*90+Math.random()*60)}
+  cracks++;
+  document.getElementById('crackNote').textContent=['Pī-pā! Nián is running for the sea.','Pī-pā! It won’t be back this year.','Xīnnián kuàilè! Happy New Year!'][Math.min(cracks-1,2)];
+};
+document.getElementById('boom').onclick=()=>{
+  const C=[['#ffd27a','#fff'],['#ff5a3c','#ffb199'],['#8fd3ff','#fff'],['#c79bff','#ffe6ff'],['#7dffb0','#fff']];
+  for(let i=0;i<9;i++)setTimeout(()=>{const x=W*(.15+Math.random()*.7),y=H*(.15+Math.random()*.35);burst(x,y,C[i%C.length],110,5.5,.05,90);noise(0,.6,.35,200);partial(90,0,.5,.3,'triangle')},i*380);
+};
+</script>
+</body></html>
